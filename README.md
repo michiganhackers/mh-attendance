@@ -12,12 +12,12 @@ Getting started is easy. We suggest using [virtualenvwrapper](http://virtualenvw
 1) Create a virtual environment where the app's dependencies will reside
 ```sh
 mkvirtualenv mh-attendance-venv
-'''
+```
 You should now be working in this virtual environment. To check, make sure your terminal shows the following:
 ```sh
 (mh-attendance-venv)username$
 ```
-If not, simply type ```sh workon mh-attendance-venv```
+If not, simply type ```workon mh-attendance-venv```
 2) After you've created your env, CD to the directory you want the app to be in and clone the Git repo for the app
 ```sh
 cd Developer
@@ -39,7 +39,7 @@ Usage
 
 Current Version
 ===
-1.0
+0.01
 
 Tech
 ===
