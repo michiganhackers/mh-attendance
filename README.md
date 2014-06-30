@@ -32,7 +32,13 @@ cd mh-attendance
 ```sh
 pip install -r requirements/dev.txt
 ```
-5) You're all set. :) Refer to the usage.
+
+5) Set-up your environment variables. Refer to Envs/.env-example for an example. You'll need .env-dev file to get rolling.
+
+6) Set up the development database. To do so, you'll have to apply all of the migrations created thus far.
+```sh
+python manage.py db upgrade
+```
 
 
 Usage

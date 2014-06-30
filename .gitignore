@@ -1,7 +1,6 @@
 *.py[cod]
 
 # Env variables
-Envs/.env
 Envs/.env-dev
 
 # C extensions

@@ -21,12 +21,12 @@ class Config(object):
 class DevelopmentConfig(Config):
 	DEBUG = True
 	WTF_CSRF_ENABLED = False
-	SQLACHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
+	SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
 		'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
 
 class TestingConfig(Config):
 	TESTING = True
-	SQLACHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
+	SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
 		'sqlite:///' + os.path.join(basedir, 'data-test.sqlite')
 
 class ProductionConfig(Config):
