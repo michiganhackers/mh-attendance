@@ -7,7 +7,7 @@ The app uses Twilio to check-in attendees to MH events. It comes with an admin i
 
 Installation
 ===
-Getting started is easy. We suggest using [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/). Once you've got that taken care of, take the following steps in your terminal:
+Getting started is easy. We suggest installing [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/). Once you've got that taken care of, take the following steps in your terminal:
 
 1) Create a virtual environment where the app's dependencies will reside
 ```sh
@@ -18,6 +18,7 @@ You should now be working in this virtual environment. To check, make sure your 
 (mh-attendance-venv)username$
 ```
 If not, simply type ```workon mh-attendance-venv```
+
 2) After you've created your env, CD to the directory you want the app to be in and clone the Git repo for the app
 ```sh
 cd Developer
