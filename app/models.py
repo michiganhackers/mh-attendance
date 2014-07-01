@@ -3,22 +3,26 @@ from datetime import datetime
 import hashlib
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from flask.ext.login import UserMixin, AnonymousUserMixin
 
 from flask import current_app, request, url_for
 from . import db
 
 
-class User(db.Model):
+
+class User(UserMixin, db.Model):
 	__tablename__ = 'users'
 	id = db.Column(db.Integer, primary_key=True)
 	username = db.Column(db.String(64), unique=True, index=True)
 	uniqname = db.Column(db.String(120), unique=True, index=True)
 	email = db.Column(db.String(120), unique=True, index=True)
 	password_hash = db.Column(db.String(128))
-	confirmed = db.Column(db.Boolean, default=False)
+	confirmed_email = db.Column(db.Boolean, default=False)
+	confirmed_uniqname = db.Column(db.Boolean, default=False)
 	name = db.Column(db.String(64))
 	member_since = db.Column(db.DateTime(), default=datetime.utcnow)
 	last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
+	is_administrator = db.Column(db.Boolean, default=False)
 
 
 	def __init__(self, **kwargs):

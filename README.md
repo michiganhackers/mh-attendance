@@ -43,6 +43,11 @@ python manage.py db upgrade
 
 Usage
 ===
+To start your local development server, run:
+```sh
+python manage.py deploy
+```
+Navigate to 127.0.0.1:5000 and you should see the app.
 
 Current Version
 ===
