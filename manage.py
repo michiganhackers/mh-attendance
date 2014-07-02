@@ -1,10 +1,5 @@
 #!/usr/bin/env python
 import os
-COV = None
-if os.environ.get('FLASK_COVERAGE'):
-    import coverage
-    COV = coverage.coverage(branch=True, include='app/*')
-    COV.start()
 
 def get_env_vars(filename):
     '''Import environment variables from filename with format key=value'''
@@ -21,10 +16,9 @@ env_file = os.path.join(envdir, '.env')
 if os.path.exists(env_file):
     
     get_env_vars(env_file)
-    os.getenv('ENV')
-    
     env = os.getenv('ENV')
     print 'Importing environment from %s' % env
+    
     env_file = 'Envs/' + env
     get_env_vars(env_file)
 
@@ -47,10 +41,11 @@ manager.add_command('db', MigrateCommand)
 @manager.command
 def test(coverage=False):
     '''Run the unit tests.'''
-    if coverage and not os.environ.get('FLASK_COVERAGE'):
-        import sys
-        os.environ['FLASK_COVERAGE'] = '1'
-        os.execvp(sys.executable, [sys.executable] + sys.argv)
+    COV = None
+    if coverage:
+        import coverage
+        COV = coverage.coverage(branch=True, include='app/*')
+        COV.start()
     import unittest
     tests = unittest.TestLoader().discover('tests')
     unittest.TextTestRunner(verbosity=2).run(tests)
