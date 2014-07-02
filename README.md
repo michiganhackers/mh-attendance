@@ -40,14 +40,25 @@ pip install -r requirements/dev.txt
 python manage.py db upgrade
 ```
 
+7) You'll need an smtp server set-up for email handling (or use [Gmail credentials](http://flask.pocoo.org/snippets/85/)). Mail is handled by [flask-mail](https://pythonhosted.org/flask-mail/). If you're on a Mac, the smtp server postfix should come built in. You can start it by running:
+```sh
+sudo postfix start
+```
 
 Usage
 ===
+
+To run the tests with coverage:
+```sh
+python manage.py tests --coverage
+```
+
 To start your local development server, run:
 ```sh
 python manage.py deploy
 ```
 Navigate to 127.0.0.1:5000 and you should see the app.
+
 
 Current Version
 ===
@@ -56,7 +67,3 @@ Current Version
 Tech
 ===
 mh-attendance uses a number of open source projects to work properly:
-
-
-
-
