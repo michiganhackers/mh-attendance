@@ -5,12 +5,21 @@
 {% block title %}Michigan Hackers{% endblock %}
 
 {% block page_content %}
+<div class="page-header">
+	{% if current_user.is_authenticated() %}
+	<h1>Hey, {{ current_user.username }}!</h1>
+	{% else %}
+	<a href="{{ url_for('auth.register') }}"><h1>Sign-up!</h1></a>
+	{% endif %}
+</div>
+
 {% if pagination %}
 <div class="pagination">
     {{ macros.pagination_widget(pagination, '.index') }}
 </div>
 {% endif %}
 {% endblock %}
+
 
 {% block scripts %}
 {{ super() }}

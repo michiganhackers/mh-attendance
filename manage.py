@@ -52,6 +52,7 @@ def test(coverage=False):
     if COV:
         COV.stop()
         COV.save()
+        print('FLASK_CONFIG: ', os.getenv('FLASK_CONFIG'))
         print('Coverage Summary:')
         COV.report()
         basedir = os.path.abspath(os.path.dirname(__file__))
