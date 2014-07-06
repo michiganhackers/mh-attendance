@@ -9,6 +9,21 @@ from flask import current_app, request, url_for
 from . import db, login_manager
 
 
+checkins = db.Table('checkins',
+	db.Column('event_id', db.Integer, db.ForeignKey('users.id')),
+	db.Column('user_id', db.Integer, db.ForeignKey('events.id'))
+)
+
+class Event(db.Model):
+	__tablename__ = 'events'
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String(120), unique=False)
+	code = db.Column(db.String(64), unique=True, index=True)
+	date = db.Column(db.DateTime(), default=datetime.utcnow)
+
+	def __repr__(self):
+		return '<Event %s>' % self.name
+
 
 class User(UserMixin, db.Model):
 	__tablename__ = 'users'
@@ -23,6 +38,10 @@ class User(UserMixin, db.Model):
 	member_since = db.Column(db.DateTime(), default=datetime.utcnow)
 	last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
 	is_administrator = db.Column(db.Boolean, default=False)
+	events = db.relationship('Event', 
+							 secondary=checkins,
+							 backref=db.backref('users', lazy='dynamic'),
+							 lazy='dynamic')
 
 
 	def __init__(self, **kwargs):
