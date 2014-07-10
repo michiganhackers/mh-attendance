@@ -6,7 +6,7 @@ from .forms import CreateEventForm
 from . import events
 from .. import db
 from ..models import User, Event
-
+from ..decorators import admin_required
 
 @events.route('/', methods=['GET', 'POST'])
 def events_list():
@@ -19,11 +19,9 @@ def events_list():
 
 @events.route('/create', methods=['GET', 'POST'])
 @login_required
+@admin_required
 def create_event():
 	form = CreateEventForm()
-	print form.name.data
-	print form.date.data
-	print form.errors 
 	if form.validate_on_submit():
 		event = Event(name=form.name.data,
 					  code=form.code.data,
