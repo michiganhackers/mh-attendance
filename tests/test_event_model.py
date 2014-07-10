@@ -5,7 +5,7 @@ from test_basics import BasicsTestCase, debug_on
 from app import db
 from app.models import User, Event
 
-class UserModelTestCase(BasicsTestCase):
+class EventModelTestCase(BasicsTestCase):
 
 	@debug_on()
 	def test_create_event(self):

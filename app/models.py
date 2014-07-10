@@ -24,6 +24,24 @@ class Event(db.Model):
 	def __repr__(self):
 		return '<Event %s>' % self.name
 
+	@staticmethod
+	def generate_fake(count=100):
+		from sqlalchemy.exc import IntegrityError
+		from random import seed
+		import forgery_py
+
+		seed()
+		for i in range(count):
+			e = Event(name=forgery_py.basic.text(at_least=3, at_most=20),
+					  code=forgery_py.basic.text(length=10),
+					  date=forgery_py.date.date(True)
+					  )
+			db.session.add(e)
+			try:
+				db.session.commit()
+			except IntegrityError:
+				db.session.rollback()
+
 
 class User(UserMixin, db.Model):
 	__tablename__ = 'users'
