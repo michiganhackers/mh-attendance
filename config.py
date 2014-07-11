@@ -14,6 +14,10 @@ class Config(object):
 	# MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 	MAIL_SUBJECT_PREFIX = '[Michigan Hackers]'
 	MAIL_SENDER = 'Michigan Hackers <michiganhackers@umich.edu>'
+	
+	TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
+	TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
+	TWILIO_FROM_NUMBER = os.environ.get('TWILIO_FROM_NUMBER')
 
 	@staticmethod
 	def init_app(app):
@@ -22,12 +26,14 @@ class Config(object):
 
 class DevelopmentConfig(Config):
 	DEBUG = True
+	TWILIO_TEST_SEND_TO_NUMBER = os.environ.get('TWILIO_TEST_SEND_TO_NUMBER')
 	SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
 		'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
 
 class TestingConfig(Config):
 	TESTING = True
 	SERVER_NAME = 'localhost'
+	TWILIO_TEST_SEND_TO_NUMBER = os.environ.get('TWILIO_TEST_SEND_TO_NUMBER')
 	SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
 		'sqlite:///' + os.path.join(basedir, 'data-test.sqlite')
 	WTF_CSRF_ENABLED = False

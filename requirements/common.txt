@@ -22,8 +22,10 @@ colorama==0.2.7
 coverage==3.7.1
 html5lib==0.999
 httpie==0.7.2
+httplib2==0.9
 itsdangerous==0.24
 requests==2.1.0
 selenium==2.39.0
 six==1.7.3
+twilio==3.6.6
 wsgiref==0.1.2
