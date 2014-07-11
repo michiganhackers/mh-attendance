@@ -32,5 +32,10 @@ def create_event():
 		return redirect(url_for('main.index'))
 	return render_template('events/create.html', form=form)
 
-
+@events.route('/register', methods=['GET', 'POST'])
+def register():
+	import twilio.twiml
+	resp = twilio.twiml.Response()
+	resp.message("Hello, Mobile Monkey")
+	return str(resp)
 

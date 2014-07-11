@@ -45,6 +45,8 @@ python manage.py db upgrade
 sudo postfix start
 ```
 
+8) Download [ngrok](https://ngrok.com/download) to test your Twilio app while running a localserver. An excellent guide on doing so can be found [here](https://www.twilio.com/blog/2013/10/test-your-webhooks-locally-with-ngrok.html). Essentially, set-up your Twilio messages URL to point to your Ngrok tunnel url.
+
 Usage
 ===
 
@@ -59,6 +61,16 @@ python manage.py deploy
 ```
 Navigate to 127.0.0.1:5000 and you should see the app.
 
+Next, start up Ngrok so that Twilio messages can be routed properly.
+```sh
+/path/to/ngrok 5000
+```
+OR
+```sh
+/path/to/ngrok -authtoken="authtoken" -subdomain="specificy subdomain" 5000
+```
+Navigate your browser to the url it lists in your terminal, and there you have it! 
+Make sure your Twilio messages url matches your ngrok url.
 
 Current Version
 ===
