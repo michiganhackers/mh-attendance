@@ -76,6 +76,7 @@ def deploy():
 
     # migrate database to latest revision
     upgrade()
+    app.run()
 
 
 if __name__ == '__main__':
