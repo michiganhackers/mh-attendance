@@ -52,7 +52,7 @@ Usage
 
 To run the tests with coverage:
 ```sh
-python manage.py tests --coverage
+python manage.py test --coverage
 ```
 
 To start your local development server, run:
