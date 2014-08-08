@@ -1,6 +1,6 @@
 from flask.ext.login import login_required, current_user
 
-from flask import render_template, redirect, url_for, flash, current_app, request
+from flask import render_template, redirect, url_for, flash, current_app, request, session
 
 from .forms import CreateEventForm
 from . import events
@@ -36,6 +36,15 @@ def create_event():
 def register():
 	import twilio.twiml
 	resp = twilio.twiml.Response()
-	resp.message("Hello, Mobile Monkey")
+
+	# check if we've interacted with this user yet for this event
+	messagecount = int(session.get('messagecount',0))
+	if messagecount == 0: 
+		resp.message('Hey there. Welcome to Michigan Hackers! Send your uniqname to register for this event.')
+	else:
+		uniqname = request.args["Body"]
+		resp.message('Thanks for registering, ' + uniqname)
+	messagecount += 1
+	session['messagecount'] = str(messagecount)
 	return str(resp)
 
