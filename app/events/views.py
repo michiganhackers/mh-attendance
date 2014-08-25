@@ -49,15 +49,15 @@ def register():
 	# check if we've interacted with this user recently
 	if messagecount == 0: 
 		shortcode = request.args['Body']
-		session['shortcode'] = shortcode
 		event = Event.query.filter_by(code=shortcode).first()
-		session['event'] = event
 		if event is None:
 			resp.message('Sorry, we couldn\'t find an event with that shortcode.')
 			return str(resp)
+
+		session['shortcode'] = shortcode
 		resp.message('Hey there. Welcome to Michigan Hackers! Send your uniqname to register for this event.')
 	elif messagecount == 1:
-		uniqname = request.args['Body']
+		uniqname = request.args['Body'].lower()
 
 		# check if we 'know' this user
 		user = User.query.filter_by(uniqname=uniqname).first()
@@ -70,24 +70,26 @@ def register():
 						uniqname=uniqname,
 						password="password")
 		else:
+			session['newmember'] = False
 			resp.message('Thanks for registering, ' + uniqname)
 
-		user.events.add(session['event'])
+		event = Event.query.filter_by(code=session['shortcode']).first()
+		user.events.append(event)
 		db.session.add(user)
 		db.session.commit()
 	elif messagecount == 2 and session['newmember']:
 		# eventually add this to some sort of spreadsheet for stats
-		year = request.args['Body']
+		year = request.args['Body'].lower()
 		resp.message('How\'d you hear about Michigan Hackers? Email or Facebook? If something else, respond with that.')
 	elif messagecount == 3 and session['newmember']:
 		# eventually add this to some sort of spreadsheet for stats
 		reason_for_joining = request.args['Body']
 		resp.message('Great! Would you like to be added to our member email list? Respond "YES" or "NO". If you\'re already on it, you can respond "NO".')
 	elif messagecount == 4 and session['newmember']:
-		add_to_email = request.args['Body']
-		if add_to_email == "YES":
+		add_to_email = request.args['Body'].lower()
+		if add_to_email == 'yes':
 			#add to email list
-			print 'hey'
+			print 'Adding to email list'
 		resp.message('Thanks so much for coming to our event. We hope to see you in the future!')
 
 	# update message count and return twiml response	
