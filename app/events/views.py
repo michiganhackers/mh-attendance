@@ -1,12 +1,15 @@
 from flask.ext.login import login_required, current_user
 
-from flask import render_template, redirect, url_for, flash, current_app, request
+from flask import render_template, redirect, url_for, flash, current_app, request, session, make_response
 
 from .forms import CreateEventForm
 from . import events
 from .. import db
 from ..models import User, Event
 from ..decorators import admin_required
+
+from datetime import timedelta
+from datetime import datetime
 
 @events.route('/', methods=['GET', 'POST'])
 def events_list():
@@ -36,6 +39,61 @@ def create_event():
 def register():
 	import twilio.twiml
 	resp = twilio.twiml.Response()
-	resp.message("Hello, Mobile Monkey")
+
+	messagecount = int(session.get('count',0))
+
+	response = make_response(str(resp))
+	expires=datetime.utcnow() + timedelta(hours=3)
+	response.set_cookie('count', value=str(messagecount),expires=expires.strftime('%a, %d %b %Y %H:%M:%S GMT'))
+
+	# check if we've interacted with this user recently
+	if messagecount == 0: 
+		shortcode = request.args['Body']
+		event = Event.query.filter_by(code=shortcode).first()
+		if event is None:
+			resp.message('Sorry, we couldn\'t find an event with that shortcode.')
+			return str(resp)
+
+		session['shortcode'] = shortcode
+		resp.message('Hey there. Welcome to Michigan Hackers! Send your uniqname to register for this event.')
+	elif messagecount == 1:
+		uniqname = request.args['Body'].lower()
+
+		# check if we 'know' this user
+		user = User.query.filter_by(uniqname=uniqname).first()
+		if user is None:
+			session['newmember'] = True
+			resp.message('Welcome to your first MH event! A few quick questions (we\'ll only ask you these once). What year are you? Reply with freshman, sophomore, junior, senior, graduate, or other.')
+			# create new user with this uniqname and add them to our database
+			user = User(email=uniqname + "@umich.edu",
+						username=uniqname,
+						uniqname=uniqname,
+						password="password")
+		else:
+			session['newmember'] = False
+			resp.message('Thanks for registering, ' + uniqname)
+
+		event = Event.query.filter_by(code=session['shortcode']).first()
+		user.events.append(event)
+		db.session.add(user)
+		db.session.commit()
+	elif messagecount == 2 and session['newmember']:
+		# eventually add this to some sort of spreadsheet for stats
+		year = request.args['Body'].lower()
+		resp.message('How\'d you hear about Michigan Hackers? Email or Facebook? If something else, respond with that.')
+	elif messagecount == 3 and session['newmember']:
+		# eventually add this to some sort of spreadsheet for stats
+		reason_for_joining = request.args['Body']
+		resp.message('Great! Would you like to be added to our member email list? Respond "YES" or "NO". If you\'re already on it, you can respond "NO".')
+	elif messagecount == 4 and session['newmember']:
+		add_to_email = request.args['Body'].lower()
+		if add_to_email == 'yes':
+			#add to email list
+			print 'Adding to email list'
+		resp.message('Thanks so much for coming to our event. We hope to see you in the future!')
+
+	# update message count and return twiml response	
+	messagecount += 1
+	session['count'] = str(messagecount)
 	return str(resp)
 
