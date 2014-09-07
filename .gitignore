@@ -5,6 +5,9 @@ Envs/*
 !Envs/.env
 !Envs/.env-example
 
+# Logs
+Logs/
+
 # C extensions
 *.so
 

@@ -48,8 +48,8 @@ class ProductionConfig(Config):
 
 		# error logs to the administrators
 		import logging
-		from logging.handlers import FileHandler
-		file_handler = FileHandler(os.environ.get('ERROR_LOG'))
+		from logging import FileHandler
+		file_handler = FileHandler(os.path.join(basedir, 'logs/error_log'))
 		app.logger.addHandler(file_handler)
 
 config = {
