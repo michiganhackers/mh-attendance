@@ -50,6 +50,7 @@ class ProductionConfig(Config):
 		import logging
 		from logging import FileHandler
 		file_handler = FileHandler(os.path.join(basedir, 'logs/error_log'))
+		file_handler.setLevel(logging.WARNING)
 		app.logger.addHandler(file_handler)
 
 config = {
