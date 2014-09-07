@@ -40,17 +40,17 @@ class TestingConfig(Config):
 
 class ProductionConfig(Config):
 	SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+		'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 
 	@classmethod
-    def init_app(cls, app):
-        Config.init_app(app)
+	def init_app(cls, app):
+		Config.init_app(app)
 
-        # error logs to the administrators
-        import logging
-        from logging.handlers import FileHandler
-        file_handler = FileHandler(os.environ.get('ERROR_LOG'))
-        app.logger.addHandler(file_handler)
+		# error logs to the administrators
+		import logging
+		from logging.handlers import FileHandler
+		file_handler = FileHandler(os.environ.get('ERROR_LOG'))
+		app.logger.addHandler(file_handler)
 
 config = {
 	'development': DevelopmentConfig,
