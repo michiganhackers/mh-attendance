@@ -72,6 +72,100 @@ OR
 Navigate your browser to the url it lists in your terminal, and there you have it! 
 Make sure your Twilio messages url matches your ngrok url.
 
+Deployment
+===
+The following commands were run when creating an EC2 instance:
+
+SSH in
+```
+ssh -i /path/key_pair.pem ec2-user@public_dns_name
+```
+
+Install mod_wsgi (Apache's python framework) and pip
+```
+sudo yum install mod_wsgi git
+curl https://bootstrap.pypa.io/get-pip.py
+sudo python get-pip.py
+sudo pip install virtualenv
+sudo pip install virtualenvwrapper
+```
+
+Set-up virtualenvwrapper
+```
+vi ~/.bash_profile
+
+Add the following into the .bash_profile:
+# .bash_profile
+
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+        . ~/.bashrc
+fi
+
+# User specific environment and startup programs
+
+PATH=$PATH:$HOME/bin
+
+export PATH
+
+# Virtualenvwrapper
+# Where to store the virtualenvs
+WORKON_HOME=~/Envs
+export  WORKON_HOME
+PROJECT_HOME=~
+export PROJECT_HOME
+source /usr/bin/virtualenvwrapper.sh
+
+
+Then run this:
+mkdir ~/Envs
+```
+
+Clone our project
+```
+git clone https://github.com/michiganhackers/mh-attendance.git
+```
+
+Create our virtualenv
+```
+mkvirtualenv mh-attendance-venv
+pip install -r mh-attendance/requirements/common.txt
+```
+
+Create our WSGI file
+```
+sudo mkdir /var/www 
+sudo cp app.wsgi /var/www/
+```
+
+Modify our Apache Conf file.
+```
+sudo nano /etc/httpd/conf/httpd.conf
+
+Add the following in:
+<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+
+    ServerName attendance.michiganhackers.org
+
+    WSGIDaemonProcess mh-attendance-app
+    WSGIScriptAlias / /var/www/app.wsgi
+
+    <Directory /var/www/>
+        WSGIProcessGroup mh-attendance-app
+        WSGIApplicationGroup %{GLOBAL}
+        Order deny,allow
+        Allow from all
+    </Directory>
+
+</VirtualHost>
+```
+```
+sudo /etc/init.d/apache2 restart
+```
+
+
+
 Current Version
 ===
 0.01

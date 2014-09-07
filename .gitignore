@@ -2,6 +2,7 @@
 
 # Env variables
 Envs/*
+!Envs/.env
 !Envs/.env-example
 
 # C extensions
