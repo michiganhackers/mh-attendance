@@ -19,7 +19,7 @@ if os.path.exists(env_file):
     env = os.getenv('ENV')
     print 'Importing environment from %s' % env
     
-    env_file = 'Envs/' + env
+    env_file = os.path.join(envdir, env)
     get_env_vars(env_file)
 
 
@@ -79,5 +79,5 @@ def deploy():
 
 
 if __name__ == '__main__':
-    manager.run()
+    # manager.run()
     app.run()   
