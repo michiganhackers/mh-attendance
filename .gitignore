@@ -8,6 +8,9 @@ Envs/*
 # C extensions
 *.so
 
+# Log files
+logs/
+
 # Packages
 *.egg
 *.egg-info
