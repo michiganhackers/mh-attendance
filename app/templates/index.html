@@ -1,26 +1,111 @@
-{% extends "base.html" %}
+{% extends "bootstrap/base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
-{% import "_macros.html" as macros %}
 
 {% block title %}Michigan Hackers{% endblock %}
 
-{% block page_content %}
-<div class="page-header">
-	{% if current_user.is_authenticated() %}
-	<h1>Hey, {{ current_user.username }}!</h1>
-	{% else %}
-	<a href="{{ url_for('auth.register') }}"><h1>Sign-up!</h1></a>
-	{% endif %}
-</div>
-
-{% if pagination %}
-<div class="pagination">
-    {{ macros.pagination_widget(pagination, '.index') }}
-</div>
-{% endif %}
+{% block head %}
+{{ super() }}
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.page-wrapper').fadeIn('slow', function() {
+            $('.content-row').slideDown('slow');
+        });
+    });
+</script>
 {% endblock %}
 
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+
+    {% block page_content %}
+    	<div class="page-wrapper">
+    		<div class="container-fluid">
+    			<div class="row title-row">
+    				<div class="col-md-12 hidden-sm hidden-xs">
+                        <div class="title-wrapper center_text">
+                            <img class="logo-title" src="{{ url_for('static', filename='img/mh-logo-title.png') }}">
+                        </div>
+    				</div>
+                    <div class="col-xs-12 hidden-md hidden-lg hidden-xl">
+                        <div class="logo-wrapper center_text">
+                            <img class="logo-icon" src="{{ url_for('static', filename='img/mh-logo-icon.png') }}">
+                        </div>
+                    </div>
+    			</div>
+                {% for message in get_flashed_messages() %}
+                <div class="alert alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ message }}
+                </div>
+                {% endfor %}
+    			<div class="row content-row">
+    				<div class="col-md-1"></div>
+    				<div class="col-md-10">
+                        <div class="row content-line">
+                            <div class="col-md-12 center_text">
+                                <h3>Looking to get involved with Michigan Hackers? Subscribe to our mailing list here:</h3>
+                            </div>
+                        </div>
+                        <div class="row content-line">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8">
+                                {{ form.email(type="email", id="email", class="form-control btn btn-default", autofocus=true, required=true, placeholder="E-Mail Address", spellcheck=false, style="text-align:left;") }}
+                                <label>
+                                    {{ form.mc_tech_talks(type="checkbox", id="mc_tech_talks", value="y") }}
+                                    <span class="checkbox-item">I would like to attend technical talks with Michigan Hackers.</span>
+                                </label>
+                                <label>
+                                    {{ form.mc_core(type="checkbox", id="mc_core", value="y") }}
+                                    <span class="checkbox-item">I would like to join the Michigan Hackers Core group to be a more involved member.</span>
+                                </label>
+                                <div class="btn_wrapper">
+                                    {{ form.submit(type="submit", id="submit", value="Subscribe", class="btn btn-default")}}
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-8 form-wrapper">
+                                <form action="POST">
+                                    <div class="form-group content-line">
+                                        <input type="email" class="form-control" id="inputEmail" spellcheck="false" placeholder="E-Mail Address" value="">
+                                    </div>
+                                    <h4>Select all that apply:</h4>
+                                    <div class="form-group">
+                                        <input type="checkbox" name="mc_give_talks" value="yes">
+                                            <span class="checkbox-item">I would like to attend technical talks with Michigan Hackers.</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="checkbox" name="mc_join_core" value="yes">
+                                            <span class="checkbox-item">I want to join the Michigan Hackers Core group to be a more involved member.</span>
+                                    </div>
+                                    <div class="btn_wrapper">
+                                        <button type="submit" class="btn btn-default">Subscribe</button>
+                                    </div>
+                                </form>
+                            </div> -->
+                            <div class="col-md-2"></div>
+                        </div>
+    				</div>
+    				<div class="col-md-1"></div>
+    			</div>
+    		</div>
+
+
+
+		</div>
+    {% endblock %}
+</div>
+{% endblock %}
 
 {% block scripts %}
 {{ super() }}
+{{ moment.include_moment() }}
 {% endblock %}
+
+
