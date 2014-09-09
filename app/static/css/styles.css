@@ -1,0 +1,76 @@
+body {
+	background: #F2F2F2;
+}
+
+p, h3, h4, .checkbox-item, label {
+  color: #646464;
+  font-weight: normal;
+}
+
+.page-wrapper {
+    display: none;
+	height: 100%;
+    max-height: 100%;
+}
+
+.title-wrapper {
+    padding: 50px 0 0 0;
+}
+
+.logo-wrapper {
+    padding: 35px 0 0 0;
+}
+
+.content-row {
+    padding: 0;
+    display: none;
+}
+
+.content-line {
+    padding: 0 0 20px 0;
+}
+
+#email {
+    height: 50px;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+#email:focus, #email:hover {
+    background: #fff;
+}
+
+#submit {
+    text-align: center;
+    height: 50px;
+    font-size: 1.2em;
+}
+
+.checkbox-item {
+    padding-left: 10px;
+    font-size: 1.1em;
+}
+
+.btn_wrapper {
+    text-align: center;
+    padding-top: 20px;
+}
+
+.logo-title {
+	width: 100%;
+    padding-bottom: 80px;
+}
+
+.logo-icon {
+    width: 30%;
+}
+
+.input-field {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.center_text {
+	text-align: center;
+}

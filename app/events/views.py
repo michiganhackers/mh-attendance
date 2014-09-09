@@ -11,6 +11,9 @@ from ..decorators import admin_required
 from datetime import timedelta
 from datetime import datetime
 
+import gspread
+import os
+
 @events.route('/', methods=['GET', 'POST'])
 def events_list():
 	page = request.args.get('page', 1, type=int)
@@ -62,7 +65,7 @@ def register():
 		# check if we 'know' this user
 		user = User.query.filter_by(uniqname=uniqname).first()
 		if user is None:
-			session['newmember'] = True
+			session['newmember'] = uniqname
 			resp.message('Welcome to your first MH event! A few quick questions (we\'ll only ask you these once). What year are you? Reply with freshman, sophomore, junior, senior, graduate, or other.')
 			# create new user with this uniqname and add them to our database
 			user = User(email=uniqname + "@umich.edu",
@@ -70,26 +73,25 @@ def register():
 						uniqname=uniqname,
 						password="password")
 		else:
-			session['newmember'] = False
 			resp.message('Thanks for registering, ' + uniqname)
-
 		event = Event.query.filter_by(code=session['shortcode']).first()
 		user.events.append(event)
 		db.session.add(user)
 		db.session.commit()
-	elif messagecount == 2 and session['newmember']:
-		# eventually add this to some sort of spreadsheet for stats
+	elif messagecount == 2 and not session.get('newmember', '') == '':
 		year = request.args['Body'].lower()
 		resp.message('How\'d you hear about Michigan Hackers? Email or Facebook? If something else, respond with that.')
 	elif messagecount == 3 and session['newmember']:
-		# eventually add this to some sort of spreadsheet for stats
 		reason_for_joining = request.args['Body']
-		resp.message('Great! Would you like to be added to our member email list? Respond "YES" or "NO". If you\'re already on it, you can respond "NO".')
-	elif messagecount == 4 and session['newmember']:
+		resp.message('Great! Would you like to be added to our member email list? Respond "YES" or "NO".')
+	elif messagecount == 4 and not session.get('newmember', '') == '':
+		gc = gspread.Client(auth=(os.environ.get('GMAIL'), os.environ.get('GMAIL_PWD')))
+		gc.login()
+		sheet = gc.open_by_key(os.environ.get('SPREADSHEET_KEY')).sheet1
+		num_rows = len(sheet.col_values(1))
 		add_to_email = request.args['Body'].lower()
 		if add_to_email == 'yes':
-			#add to email list
-			print 'Adding to email list'
+			sheet.update_acell('A' + str(num_rows + 1), session.get('newmember',''))
 		resp.message('Thanks so much for coming to our event. We hope to see you in the future!')
 
 	# update message count and return twiml response	
