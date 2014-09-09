@@ -54,6 +54,8 @@ class User(UserMixin, db.Model):
 	confirmed_uniqname = db.Column(db.Boolean, default=False)
 	name = db.Column(db.String(64))
 	member_since = db.Column(db.DateTime(), default=datetime.utcnow)
+	attend_talks = db.Column(db.Boolean, default=True)
+	join_core = db.Column(db.Boolean, default=False)
 	last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
 	is_administrator = db.Column(db.Boolean, default=False)
 	events = db.relationship('Event', 

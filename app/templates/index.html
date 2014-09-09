@@ -56,39 +56,11 @@
                         </div>
                         <div class="row content-line">
                             <div class="col-md-2"></div>
+
                             <div class="col-md-8">
-                                {{ form.email(type="email", id="email", class="form-control btn btn-default", autofocus=true, required=true, placeholder="E-Mail Address", spellcheck=false, style="text-align:left;") }}
-                                <label>
-                                    {{ form.mc_tech_talks(type="checkbox", id="mc_tech_talks", value="y") }}
-                                    <span class="checkbox-item">I would like to attend technical talks with Michigan Hackers.</span>
-                                </label>
-                                <label>
-                                    {{ form.mc_core(type="checkbox", id="mc_core", value="y") }}
-                                    <span class="checkbox-item">I would like to join the Michigan Hackers Core group to be a more involved member.</span>
-                                </label>
-                                <div class="btn_wrapper">
-                                    {{ form.submit(type="submit", id="submit", value="Subscribe", class="btn btn-default")}}
-                                </div>
+                            {{ wtf.quick_form(form) }}
                             </div>
-                            <!-- <div class="col-md-8 form-wrapper">
-                                <form action="POST">
-                                    <div class="form-group content-line">
-                                        <input type="email" class="form-control" id="inputEmail" spellcheck="false" placeholder="E-Mail Address" value="">
-                                    </div>
-                                    <h4>Select all that apply:</h4>
-                                    <div class="form-group">
-                                        <input type="checkbox" name="mc_give_talks" value="yes">
-                                            <span class="checkbox-item">I would like to attend technical talks with Michigan Hackers.</span>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="checkbox" name="mc_join_core" value="yes">
-                                            <span class="checkbox-item">I want to join the Michigan Hackers Core group to be a more involved member.</span>
-                                    </div>
-                                    <div class="btn_wrapper">
-                                        <button type="submit" class="btn btn-default">Subscribe</button>
-                                    </div>
-                                </form>
-                            </div> -->
+                            
                             <div class="col-md-2"></div>
                         </div>
     				</div>
