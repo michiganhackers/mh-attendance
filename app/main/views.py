@@ -37,7 +37,8 @@ def index():
 		gc.login()
 		sheet = gc.open_by_key(os.environ.get('SPREADSHEET_KEY')).sheet1
 		num_rows = len(sheet.col_values(1))
-		sheet.update_acell('A' + str(num_rows + 1), email)
+		sheet.append_row([email, techtalks, core])
+		# sheet.update_acell('A' + str(num_rows + 1), email)
 			# print "Added user %s to the database." % email
 
 			# Add the email to google spreadsheet (and uniqname to Twilio backend?)
