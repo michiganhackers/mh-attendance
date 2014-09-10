@@ -49,15 +49,15 @@ class ProductionConfig(Config):
 
 		# error logs to the administrators
 		import logging
-	    from logging.handlers import SMTPHandler
+		from logging.handlers import SMTPHandler
 
-	    ADMINS = [os.environ.get(ADMIN)]
-	    mail_handler = SMTPHandler(os.environ.get(MAIL_SERVER),
-	                               os.environ.get(MAIL_USERNAME),
-	                               ADMINS, 'YourApplication Failed',
-	                               credentials=(os.environ.get(MAIL_USERNAME), os.environ.get(MAIL_PASSWORD)))
-	    mail_handler.setLevel(logging.ERROR)
-	    app.logger.addHandler(mail_handler)
+		ADMINS = [os.environ.get(ADMIN)]
+		mail_handler = SMTPHandler(os.environ.get(MAIL_SERVER),
+								   os.environ.get(MAIL_USERNAME),
+								   ADMINS, 'YourApplication Failed',
+								   credentials=(os.environ.get(MAIL_USERNAME), os.environ.get(MAIL_PASSWORD)))
+		mail_handler.setLevel(logging.ERROR)
+		app.logger.addHandler(mail_handler)
 
 config = {
 	'development': DevelopmentConfig,
