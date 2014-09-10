@@ -48,11 +48,11 @@ class ProductionConfig(Config):
 		Config.init_app(app)
 
 		# error logs to the administrators
-		import logging
-		from logging import FileHandler
-		file_handler = FileHandler('/tmp/logs/error_log')
-		file_handler.setLevel(logging.WARNING)
-		app.logger.addHandler(file_handler)
+		# import logging
+		# from logging import FileHandler
+		# file_handler = FileHandler(os.path.join(basedir, 'logs/error_log'))
+		# file_handler.setLevel(logging.WARNING)
+		# app.logger.addHandler(file_handler)
 
 config = {
 	'development': DevelopmentConfig,
