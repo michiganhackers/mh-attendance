@@ -1,6 +1,6 @@
 from flask.ext.login import login_required, current_user
 
-from flask import render_template, current_app, redirect, url_for, flash
+from flask import render_template, current_app, redirect, url_for, flash, g
 
 from .forms import CreateUserInfoForm
 from ..models import User
@@ -13,7 +13,8 @@ import os
 @main.route('/', methods=['GET', 'POST'])
 def index():
 	form = CreateUserInfoForm();
-	print form
+	print g.get('_gspread')
+
 	if form.validate_on_submit():
 		email = form.email.data
 		techtalks = form.mc_tech_talks.data
@@ -32,7 +33,6 @@ def index():
 			# 			password="password")
 			# db.session.add(user)
 			# db.session.commit()
-
 		gc = gspread.Client(auth=(os.environ.get('GMAIL'), os.environ.get('GMAIL_PWD')))
 		gc.login()
 		sheet = gc.open_by_key(os.environ.get('SPREADSHEET_KEY')).sheet1
