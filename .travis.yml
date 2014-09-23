@@ -2,6 +2,11 @@ language: python
 python:
     - "2.7"
 # command to install dependencies
-install: "pip install -r requirements/dev.txt"
+install: 
+    - "pip install virtualenvwrapper"
+    - "mkvirtualenv mh-attendance-venv"
+    - "workon mh-attendance-venv"
+    - "source ./Envs/.env-example"
+    - "pip install -r requirements/dev.txt"
 # command to run tests
 script: nosetests
