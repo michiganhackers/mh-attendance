@@ -1,10 +1,11 @@
 language: python
 python:
-    - "2.7"
-# command to install dependencies
-install: 
-    - "source ./Envs/.env-example"
-    - "pip install -r requirements.txt"
-    - "python manage.py deploy"
-# command to run tests
+- '2.7'
+install:
+- source ./Envs/.env-example
+- pip install -r requirements.txt
+- python manage.py deploy
 script: nosetests
+notifications:
+  slack:
+    secure: ZsigslxMr2jiRUfqmAeJMGh31BYicgfWrSABszvsqOoHNeO5kVqf2aQ+SDb+Xbc5GhoRoMQ8GLgsQRgjYB/jJP4EXocAROYgDv0wwjo8RCdt2TyvjlZ4lt/h7oRWCso1Cxh7W9qMuRs2au1K4tnbTt2XVzjmN3xURCZgEKrigV0=
