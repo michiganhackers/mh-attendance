@@ -1,7 +1,7 @@
 MH Attendance 
 ======
 
-[![Build Status](https://travis-ci.org/michiganhackers/mh-attendance.svg?branch=travis-ci)](https://travis-ci.org/michiganhackers/mh-attendance)
+[![Build Status](https://travis-ci.org/michiganhackers/mh-attendance.svg)](https://travis-ci.org/michiganhackers/mh-attendance)
 
 This repository contains the source code for [Michigan Hackers](http://wwww.michiganhackers.org)' attendance app.
 
