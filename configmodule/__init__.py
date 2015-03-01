@@ -9,7 +9,7 @@ class Config(object):
 	SSL_DISABLE = False
 	SQLALCHEMY_RECORD_QUERIES = True	
 	MAIL_SERVER = os.environ.get('MAIL_SERVER')
-	MAIL_PORT = os.environ.get('MAIL_PORT', 443)
+	MAIL_PORT = os.environ.get('MAIL_PORT', 465)
 	MAIL_USE_SSL = os.environ.get('MAIL_USE_SSL', False)
 	MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS', True)
 	MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
