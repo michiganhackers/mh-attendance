@@ -52,6 +52,7 @@ tmp
 
 # Virtual environment
 venv
+env
 
 # System files
 *.DS_Store

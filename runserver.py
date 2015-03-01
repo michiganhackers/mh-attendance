@@ -1,5 +1,5 @@
-#!/usr/bin/env python
 import os
+import sys
 
 def get_env_vars(filename):
     '''Import environment variables from filename with format key=value'''
@@ -8,21 +8,29 @@ def get_env_vars(filename):
         if len(var) == 2:
             os.environ[var[0]] = var[1]
 
-# Set environment variables
-basedir = os.path.abspath(os.path.dirname(__file__))
-envdir = os.path.join(basedir, 'Envs')
+def setup_environment():
+    """
+    Loads the environment variables from the Envs/ folder.
+    Specifically, ./Envs/.env-$ENV
 
-env_file = os.path.join(envdir, '.env')
-if os.path.exists(env_file):
-    
-    get_env_vars(env_file)
-    env = os.getenv('ENV')
+    If this fails to find the ENV variable set, it defaults to 'dev'
+    """
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    envdir = os.path.join(basedir, 'Envs')
+    env_file = os.path.join(envdir, '.env-')
+
+    env = os.getenv('ENV', None)
+    if env is None:
+        print >> sys.stderr, "Warning: Environment variable 'ENV' is not set, "\
+                             + "defaulting to development."
+        env = 'dev'
     print 'Importing environment from %s' % env
-    
-    env_file = os.path.join(envdir, env)
+
+    env_file += env
     get_env_vars(env_file)
 
 
+setup_environment()
 from app import create_app, db
 from app.models import User, Event
 from flask.ext.script import Manager, Shell
@@ -36,7 +44,6 @@ def make_shell_context():
     return dict(app=app, db=db, User=User, Event=Event)
 manager.add_command('shell', Shell(make_context=make_shell_context))
 manager.add_command('db', MigrateCommand)
-
 
 @manager.command
 def test(coverage=False):
@@ -70,7 +77,25 @@ def profile(length=25, profile_dir=None):
     app.run()
 
 @manager.command
-def deploy():
+def create_db(mock=False):
+    db.create_all()
+    migrate()
+
+    if mock:
+        load_mock_data()
+
+def load_mock_data():
+    User.generate_fake(100)
+    Event.generate_fake(100)
+
+@manager.command
+def recreate_db(mock=False):
+    db.drop_all()
+    create_db(mock=mock)
+
+
+@manager.command
+def migrate():
     '''Run deployment tasks.'''
     from flask.ext.migrate import upgrade
 
@@ -80,4 +105,4 @@ def deploy():
 
 if __name__ == '__main__':
     manager.run()
-    app.run()   
+    app.run(debug=True)

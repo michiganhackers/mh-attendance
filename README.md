@@ -1,66 +1,39 @@
-MH Attendance 
-======
+# MH Attendance
+[![Build Status](https://travis-ci.org/michiganhackers/mh-attendance.svg)](https://travis-ci.org/michiganhackers/mh-attendance)
 
 This repository contains the source code for [Michigan Hackers](http://wwww.michiganhackers.org)' attendance app.
 
 The app uses Twilio to check-in attendees to MH events. It comes with an admin interface so MHers can set-up event-based check-in "sessions", an API for querying and a conversation framework so we can register new members quickly and get to know more about them.
 
-Installation
-===
-Getting started is easy. We suggest installing [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/). Once you've got that taken care of, take the following steps in your terminal:
 
-1) Create a virtual environment where the app's dependencies will reside
-```sh
-mkvirtualenv mh-attendance-venv
-```
-You should now be working in this virtual environment. To check, make sure your terminal shows the following:
-```sh
-(mh-attendance-venv)username$
-```
-If not, simply type ```workon mh-attendance-venv```
+# Getting started
 
-2) After you've created your env, CD to the directory you want the app to be in and clone the Git repo for the app
-```sh
-cd Developer
-git clone https://github.com/michiganhackers/mh-attendance.git
-```
-3) Navigate to the app
-```sh
-cd mh-attendance
-```
-4) Pip install of the project dependencies by running the following:
-```sh
-pip install -r requirements/dev.txt
-```
+#### Install pip 
 
-5) Set-up your environment variables. Refer to Envs/.env-example for an example. You'll need .env-dev file to get rolling.
+    easy_install pip
 
-6) Set up the development database. To do so, you'll have to apply all of the migrations created thus far.
-```sh
-python manage.py db upgrade
-```
+#### Install Fabric 
 
-7) You'll need an smtp server set-up for email handling (or use [Gmail credentials](http://flask.pocoo.org/snippets/85/)). Mail is handled by [flask-mail](https://pythonhosted.org/flask-mail/). If you're on a Mac, the smtp server postfix should come built in. You can start it by running:
+    pip install fabric
+
+#### Setup the project
+
+    fab setup
+
+#### Setup a mail server
+You'll need an smtp server set-up for email handling (or use [Gmail credentials](http://flask.pocoo.org/snippets/85/)). Mail is handled by [flask-mail](https://pythonhosted.org/flask-mail/). If you're on a Mac, the smtp server postfix should come built in. You can start it by running:
 ```sh
 sudo postfix start
 ```
 
-8) Download [ngrok](https://ngrok.com/download) to test your Twilio app while running a localserver. An excellent guide on doing so can be found [here](https://www.twilio.com/blog/2013/10/test-your-webhooks-locally-with-ngrok.html). Essentially, set-up your Twilio messages URL to point to your Ngrok tunnel url.
+#### Setup Ngrok
+Download [ngrok](https://ngrok.com/download) to test your Twilio app while running a localserver. An excellent guide on doing so can be found [here](https://www.twilio.com/blog/2013/10/test-your-webhooks-locally-with-ngrok.html). Essentially, set-up your Twilio messages URL to point to your Ngrok tunnel url.
 
-Usage
-===
+#### Run the server!
 
-To run the tests with coverage:
-```sh
-python manage.py test --coverage
-```
+    fab run_dev
 
-To start your local development server, run:
-```sh
-python manage.py deploy
-```
-Navigate to 127.0.0.1:5000 and you should see the app.
-
+#### Run Ngrok
 Next, start up Ngrok so that Twilio messages can be routed properly.
 ```sh
 /path/to/ngrok 5000
@@ -72,104 +45,70 @@ OR
 Navigate your browser to the url it lists in your terminal, and there you have it! 
 Make sure your Twilio messages url matches your ngrok url.
 
-Deployment
-===
-The following commands were run when creating an EC2 instance:
+Enjoy! Access it at `localhost:5000`
 
-SSH in
+
+## Deploying to staging
+
+#### Configure SSH
+
+Move your AWS key into ~/.ssh/
+
+Add this to your SSH config (~/.ssh/config). Create it if the file doesn't exist.
+
+	Host mh-attendance
+	    Hostname ec2-public-address.compute-1.amazonaws.com
+	    User ubuntu
+	    port 22
+	    IdentityFile ~/.ssh/mh-attendance-keypair-useast1.pem
+
+Verify that the ssh host works
+
+	ssh mh-attendance
+
+
+#### Deploy
+
+##### Set-up your remote environment
+
+Add this to your instance's /etc/nginx/sites-available/etc
 ```
-ssh -i /path/key_pair.pem ec2-user@public_dns_name
-```
+server {
+    #EC2 instance security group must be configured to accept http connections over Port 80 
+    listen 80;
+    server_name ec2-public-address.compute-1.amazonaws.com;
 
-Install mod_wsgi (Apache's python framework) and pip
-```
-sudo yum install mod_wsgi git
-curl https://bootstrap.pypa.io/get-pip.py
-sudo python get-pip.py
-sudo pip install virtualenv
-sudo pip install virtualenvwrapper
-```
+    access_log  /var/log/nginx/guni-access.log;
+    error_log  /var/log/nginx/guni-error.log info;
 
-Set-up virtualenvwrapper
-```
-vi ~/.bash_profile
+    keepalive_timeout 5;
 
-Add the following into the .bash_profile:
-# .bash_profile
+    # path for static files
+    root /home/ubuntu/mh-attendance/app/static/;
 
-# Get the aliases and functions
-if [ -f ~/.bashrc ]; then
-        . ~/.bashrc
-fi
-
-# User specific environment and startup programs
-
-PATH=$PATH:$HOME/bin
-
-export PATH
-
-# Virtualenvwrapper
-# Where to store the virtualenvs
-WORKON_HOME=~/Envs
-export  WORKON_HOME
-PROJECT_HOME=~
-export PROJECT_HOME
-source /usr/bin/virtualenvwrapper.sh
+    location / {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_pass http://127.0.0.1:8000/;
 
 
-Then run this:
-mkdir ~/Envs
-```
-
-Clone our project
-```
-git clone https://github.com/michiganhackers/mh-attendance.git
-```
-
-Create our virtualenv
-```
-mkvirtualenv mh-attendance-venv
-pip install -r mh-attendance/requirements/common.txt
-```
-
-Create our WSGI file
-```
-sudo mkdir /var/www 
-sudo cp app.wsgi /var/www/
-```
-
-Modify our Apache Conf file.
-```
-sudo nano /etc/httpd/conf/httpd.conf
-
-Add the following in:
-<VirtualHost *:80>
-    ServerAdmin webmaster@localhost
-
-    ServerName attendance.michiganhackers.org
-
-    WSGIDaemonProcess mh-attendance-app
-    WSGIScriptAlias / /var/www/app.wsgi
-
-    <Directory /var/www/>
-        WSGIProcessGroup mh-attendance-app
-        WSGIApplicationGroup %{GLOBAL}
-        Order deny,allow
-        Allow from all
-    </Directory>
-
-</VirtualHost>
+    }
+}
 ```
 ```
-sudo /etc/init.d/apache2 restart
+sudo service nginx restart
 ```
 
+##### Deploy
+Add your remote
 
+    git remote add production ubuntu@mh-attendance:~/mh-attendance.git
 
-Current Version
-===
-0.01
+and push to production...
 
-Tech
-===
-mh-attendance uses a number of open source projects to work properly:
+    git push -f production master
+
+Production runs off of a hook from origin/master, so you must first push to origin for the server to update.
+
+See Matt about getting keys
