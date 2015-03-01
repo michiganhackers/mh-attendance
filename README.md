@@ -18,7 +18,7 @@ The app uses Twilio to check-in attendees to MH events. It comes with an admin i
 
 #### Setup the project
 
-    fab setup
+    fab dev setup
 
 #### Setup a mail server
 You'll need an smtp server set-up for email handling (or use [Gmail credentials](http://flask.pocoo.org/snippets/85/)). Mail is handled by [flask-mail](https://pythonhosted.org/flask-mail/). If you're on a Mac, the smtp server postfix should come built in. You can start it by running:
