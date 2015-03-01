@@ -27,10 +27,17 @@ def clean():
 def setup():
     """Install requirements"""
     with lcd(SRC_DIR):
+        print "SRC_DIR: %s" % SRC_DIR
         local('virtualenv env')
         virtualenv('pip install -r requirements.txt')
         gen_dev_env_config()
         create_db()
+
+@task
+def pip_freeze():
+    """Freeze pip install modules"""
+    virtualenv("./env/bin/pip freeze > requirements.txt")
+
 
 @task
 def run_dev():
