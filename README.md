@@ -71,7 +71,7 @@ Verify that the ssh host works
 
 ##### Set-up your remote environment
 
-Add this to your instance's /etc/nginx/sites-available/etc
+Add this to your instance's /etc/nginx/sites-available/default
 ```
 server {
     #EC2 instance security group must be configured to accept http connections over Port 80 
