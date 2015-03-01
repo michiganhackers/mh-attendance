@@ -54,6 +54,14 @@ def gen_dev_env_config():
         local('mkdir -p ./Envs/')
         local('touch ./Envs/.env-dev')
 
+        # Not required, so only warn if not there
+        with settings(warn_only=True):
+            copy_env()
+
+@task
+def copy_env():
+    local('cp -r ../mh-attendance-envs/.env* Envs/')
+
 @task
 def migrate():
     """Runs database migrations"""
