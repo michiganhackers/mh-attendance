@@ -78,7 +78,6 @@ def profile(length=25, profile_dir=None):
 
 @manager.command
 def create_db(mock=False):
-    db.create_all()
     migrate()
 
     if mock:
