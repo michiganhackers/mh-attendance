@@ -1,0 +1,25 @@
+This is a conclusion of all the features we want/have. This is the blueprint of the final product.
+
+We want to create a website for event host (aka admin) to easily create signup sheet/questions for every event. One senario will look like this: 
+
+One week prior to the core meeting, Matt comes to this website and create this event. At the same time, he also submits some questions he wants to ask for the participatiants.For example, do they like pineapple pizza, or how is their spring break. Then he gets an event code and a Twilio phone number.
+
+At the event, Matt could ask people to sign up either by sending SMS to Twilio number or sign up on the website with event code.
+
+If the user is the first time sign up in our system, we will ask additional information like class standing and uniqname. If we have information about that user's cell phone number, or email address, we won't ask them again when they sign up for an event.
+
+Also, our website could serve as a bulletin or social network, displaying and archiving all of Michigan Hackers events.
+
+homepage:
+    Gateway to event signup page
+    Add visitor to email list
+    Login for user and admin. Seperate login tab. 
+
+admin:
+    Create event
+    Manage existing event. including showing the survey result of each event
+
+user:
+    User registration is optional. Because they can sign up events with their phones, so it is totally okay if they never have an online account.
+    Explore events s/he has attended, download slides and other materials. 
+    Check out other events coming soon or in the past.
