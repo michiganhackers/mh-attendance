@@ -31,6 +31,7 @@ httpie==0.7.2
 httplib2==0.9
 itsdangerous==0.24
 jmespath==0.4.1
+psycopg2==2.6
 pyasn1==0.1.7
 python-dateutil==2.2
 requests==2.1.0

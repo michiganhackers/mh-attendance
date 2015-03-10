@@ -74,6 +74,11 @@ def register():
 						password="password")
 		else:
 			resp.message('Thanks for registering, ' + uniqname)
+			gc = gspread.Client(auth=(os.environ.get('GMAIL'), os.environ.get('GMAIL_PWD')))
+			gc.login()
+			sheet = gc.open_by_key(os.environ.get('SPREADSHEET_KEY')).sheet1
+			num_rows = len(sheet.col_values(1))
+			sheet.update_acell('A' + str(num_rows + 1), uniqname)
 		event = Event.query.filter_by(code=session['shortcode']).first()
 		user.events.append(event)
 		db.session.add(user)
