@@ -1,6 +1,8 @@
 # MH Attendance
 [![Build Status](https://travis-ci.org/michiganhackers/mh-attendance.svg)](https://travis-ci.org/michiganhackers/mh-attendance)
 
+[![Build Status](https://travis-ci.org/michiganhackers/mh-attendance.svg)](https://travis-ci.org/michiganhackers/mh-attendance)
+
 This repository contains the source code for [Michigan Hackers](http://wwww.michiganhackers.org)' attendance app.
 
 The app uses Twilio to check-in attendees to MH events. It comes with an admin interface so MHers can set-up event-based check-in "sessions", an API for querying and a conversation framework so we can register new members quickly and get to know more about them.
