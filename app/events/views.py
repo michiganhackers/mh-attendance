@@ -14,6 +14,7 @@ from datetime import datetime
 import gspread
 import os
 
+#querys events from db and populates the page with them, 10 at a time
 @events.route('/', methods=['GET', 'POST'])
 def events_list():
 	page = request.args.get('page', 1, type=int)
@@ -36,8 +37,9 @@ def create_event():
 		db.session.commit()
 		flash('Your event has been created. Have users text %s to attend.' % event.code)
 		return redirect(url_for('main.index'))
-	return render_template('events/create.html', form=form)
+	return render_template('events/create.html', form=form) #only if the form is not valid, or submit is not clicked
 
+#this has to be done through twilio, or there is a 400 response
 @events.route('/register', methods=['GET', 'POST'])
 def register():
 	import twilio.twiml
@@ -46,11 +48,11 @@ def register():
 	messagecount = int(session.get('count',0))
 
 	response = make_response(str(resp))
-	expires=datetime.utcnow() + timedelta(hours=3)
-	response.set_cookie('count', value=str(messagecount),expires=expires.strftime('%a, %d %b %Y %H:%M:%S GMT'))
+	expires = datetime.utcnow() + timedelta(hours=3)
+	response.set_cookie('count', value=str(messagecount),expires=expires.strftime('%a, %d %b %Y %H:%M:%S GMT')) #this IDs the user
 
 	# check if we've interacted with this user recently
-	if messagecount == 0: 
+	if messagecount == 0: #this is how many messages the user has sent to register
 		shortcode = request.args['Body']
 		event = Event.query.filter_by(code=shortcode).first()
 		if event is None:
@@ -99,8 +101,7 @@ def register():
 			sheet.update_acell('A' + str(num_rows + 1), session.get('newmember',''))
 		resp.message('Thanks so much for coming to our event. We hope to see you in the future!')
 
-	# update message count and return twiml response	
+	# update message count and return twiml response
 	messagecount += 1
 	session['count'] = str(messagecount)
 	return str(resp)
-

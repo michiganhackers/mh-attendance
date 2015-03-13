@@ -58,7 +58,7 @@ class User(UserMixin, db.Model):
 	join_core = db.Column(db.Boolean, default=False)
 	last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
 	is_administrator = db.Column(db.Boolean, default=False)
-	events = db.relationship('Event', 
+	events = db.relationship('Event',
 							 secondary=checkins,
 							 backref=db.backref('users', lazy='dynamic'),
 							 lazy='dynamic')
@@ -66,7 +66,7 @@ class User(UserMixin, db.Model):
 
 	def __init__(self, **kwargs):
 		super(User, self).__init__(**kwargs)
-	
+
 	def __repr__(self):
 		return '<User username:%r uniqname: %r>' % (self.username, self.uniqname)
 
@@ -140,7 +140,7 @@ class User(UserMixin, db.Model):
 
 	def change_email(self, token):
 		s = Serializer(current_app.config['SECRET_KEY'])
-		try: 
+		try:
 			data = s.loads(token)
 		except:
 			return False
@@ -148,7 +148,7 @@ class User(UserMixin, db.Model):
 			return False
 		new_email = data.get('new_email')
 		if new_email is None:
-			return False
+			return False 
 		if self.query.filter_by(email=new_email).first() is not None:
 			return False
 		self.email = new_email
