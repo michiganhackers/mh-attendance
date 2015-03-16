@@ -85,10 +85,10 @@ def register():
 		user.events.append(event)
 		db.session.add(user)
 		db.session.commit()
-	elif messagecount == 2 and not session.get('newmember', '') == '':
+	elif messagecount == 2 and not session.get('newmember', '') == '': #what about messagecount == 2 and the session is a new member
 		year = request.args['Body'].lower()
 		resp.message('How\'d you hear about Michigan Hackers? Email or Facebook? If something else, respond with that.')
-	elif messagecount == 3 and session['newmember']:
+	elif messagecount == 3 and session['newmember']: #or why is it checking for a new member here? What happens for users that sent 2 messages and are a newmember?
 		reason_for_joining = request.args['Body']
 		resp.message('Great! Would you like to be added to our member email list? Respond "YES" or "NO".')
 	elif messagecount == 4 and not session.get('newmember', '') == '':
