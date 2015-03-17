@@ -28,7 +28,7 @@ def events_list():
 @login_required
 @admin_required
 def create_event():
-	form = CreateEventForm()
+	form = CreateEventForm() #this seems to work, but I'm not getting a table for it to load
 	if form.validate_on_submit():
 		event = Event(name=form.name.data,
 					  code=form.code.data,
