@@ -49,6 +49,11 @@ Make sure your Twilio messages url matches your ngrok url.
 
 Enjoy! Access it at `localhost:5000`
 
+#### Run the test!
+Before run the test, make sure there is something useful/working at Env/.env-test
+
+    fab run_test
+
 
 ## Deploying to staging
 

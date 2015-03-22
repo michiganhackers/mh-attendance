@@ -41,6 +41,8 @@ p, h3, h4, .checkbox-item, label {
 }
 
 #submit {
+    display: block;
+    margin: auto;
     text-align: center;
     height: 50px;
     font-size: 1.2em;

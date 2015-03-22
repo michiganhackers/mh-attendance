@@ -2,7 +2,7 @@ from flask.ext.login import login_required, current_user
 
 from flask import render_template, current_app, redirect, url_for, flash, g
 
-from .forms import CreateUserInfoForm
+from .forms import CreateUserInfoForm, CreateCodeEnterForm
 from ..models import User
 from .. import db
 from . import main
@@ -12,13 +12,14 @@ import os
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-	form = CreateUserInfoForm();
+	infoForm = CreateUserInfoForm();
+	codeForm = CreateCodeEnterForm();
 	print g.get('_gspread')
 
-	if form.validate_on_submit():
-		email = form.email.data
-		techtalks = form.mc_tech_talks.data
-		core = form.mc_core.data
+	if infoForm.validate_on_submit():
+		email = infoForm.email.data
+		techtalks = infoForm.mc_tech_talks.data
+		core = infoForm.mc_core.data
 		
 		# check if we 'know' this user
 		# user = User.query.filter_by(email=email).first()
@@ -44,4 +45,4 @@ def index():
 			# Add the email to google spreadsheet (and uniqname to Twilio backend?)
 		flash("You've been subscribed to the Michigan Hackers E-mail list. We send out E-mails every Wednesday so be on the lookout!", 'success')
 		return redirect(url_for('main.index'))
-	return render_template('index.html', form=form)
+	return render_template('index.html', infoForm=infoForm, codeForm=codeForm)

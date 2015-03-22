@@ -104,3 +104,10 @@ def virtualenv(cmd):
     with shell_env(ENV=env.ENV):
         local("/bin/bash -l -c 'source ./env/bin/activate && {}'".format(cmd))
 
+
+@task
+def run_test():
+    """Start a test staging server"""
+    test()
+    with lcd(SRC_DIR), shell_env(ENV='dev'):
+        virtualenv("python runserver.py test")
