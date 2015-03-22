@@ -4,7 +4,7 @@ python:
 install:
 - pip install fabric
 - fab dev setup
-script: python runserver.py test
+script: fab run_test
 notifications:
   slack:
     secure: ZsigslxMr2jiRUfqmAeJMGh31BYicgfWrSABszvsqOoHNeO5kVqf2aQ+SDb+Xbc5GhoRoMQ8GLgsQRgjYB/jJP4EXocAROYgDv0wwjo8RCdt2TyvjlZ4lt/h7oRWCso1Cxh7W9qMuRs2au1K4tnbTt2XVzjmN3xURCZgEKrigV0=
