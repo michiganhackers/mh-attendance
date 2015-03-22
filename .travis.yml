@@ -2,9 +2,7 @@ language: python
 python:
 - '2.7'
 install:
-- source ./Envs/.env-example
-- pip install -r requirements.txt
-- python manage.py deploy
+- fab dev setup
 script: nosetests
 notifications:
   slack:
