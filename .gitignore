@@ -4,7 +4,7 @@
 Envs/*
 !Envs/.env
 !Envs/.env-example
-!Envs/.env-dev
+# !Envs/.env-dev
 !Envs/.env-test
 
 # Logs

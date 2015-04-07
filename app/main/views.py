@@ -3,7 +3,7 @@ from flask.ext.login import login_required, current_user
 from flask import render_template, current_app, redirect, url_for, flash, g
 
 from .forms import CreateUserInfoForm, CreateCodeEnterForm
-from ..models import User
+from ..models import User, Event
 from .. import db
 from . import main
 
@@ -45,4 +45,15 @@ def index():
 			# Add the email to google spreadsheet (and uniqname to Twilio backend?)
 		flash("You've been subscribed to the Michigan Hackers E-mail list. We send out E-mails every Wednesday so be on the lookout!", 'success')
 		return redirect(url_for('main.index'))
+
+	if codeForm.validate_on_submit():
+		shortcode = codeForm.code.data
+
+		event = Event.query.filter_by(code=shortcode).first()
+		if event is None:
+			flash('Sorry, we couldn\'t find an event with that shortcode.')
+			return redirect(url_for('main.index'))
+		else:
+			return redirect(url_for('events.web_register', event=event))
+
 	return render_template('index.html', infoForm=infoForm, codeForm=codeForm)

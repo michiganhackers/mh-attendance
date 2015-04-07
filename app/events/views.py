@@ -105,3 +105,14 @@ def register():
 	messagecount += 1
 	session['count'] = str(messagecount)
 	return str(resp)
+
+
+#this has to be done through twilio, or there is a 400 response
+@events.route('/web_register', methods=['GET', 'POST'])
+def web_register():
+	event = request.args['event']
+
+	print event
+
+	return render_template('events/web_register.html')
+
